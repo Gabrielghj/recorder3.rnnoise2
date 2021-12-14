@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8">
+		<title>Recorder 3</title>
+
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="lib/bootstrap-4.3.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="lib/bootstrap-select-1.13.9/css/bootstrap-select.css">
+		<!-- Scrollbar Custom CSS -->
+		<link rel="stylesheet" href="lib/malihu-custom-scrollbar-3.1.5/jquery.mCustomScrollbar.min.css">
+		<!-- Font Awesome JS -->
+		<link rel="stylesheet" href="lib/fontawesome-free-5.8.2/css/solid.css">
+		<link rel="stylesheet" href="lib/fontawesome-free-5.8.2/css/regular.css">
+		<link rel="stylesheet" href="lib/fontawesome-free-5.8.2/css/fontawesome.css">
+		<!-- Tooltipster -->
+		<link rel="stylesheet" href="lib/tooltipster-4.2.6/css/tooltipster.bundle.min.css">
+		<link rel="stylesheet" href="lib/tooltipster-4.2.6/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-borderless.min.css">
+
+		<link rel="stylesheet" href="css/bootstrap-notify.css">
+		<link rel="stylesheet" href="css/style.css?v=2.1.1">
+	</head>
+	<body style="background: #f1f1f1;">
+
+		<div id="page">
+
+			<!-- Sidebar  -->
+			<!--
+			<nav id="sidebar">
+				<div class="sidebar-header p-4">
+					<h3>Recorder 2.0</h3>
+
+					<div class="dismiss">
+						<i class="fas fa-times"></i>
+					</div>
+				</div>
+
+				<div class="sidebar-content p-4">
+					<div>
+						<h3 class="h5 mb-2">Filtro</h3>
+						<select id="filter" class="form-control shadow-none rounded-0">
+							<option value="">Ninguno</option>
+							<option value="allpass" data-frequency="20000" data-q="1">Pasa todo</option>
+							<option value="lowpass" data-frequency="400" data-q="1">Pasa bajo</option>
+							<option value="highpass" data-frequency="3000" data-q="1">Pasa alto</option>
+							<option value="bandpass" data-frequency="1500" data-q="5">Pasa banda</option>
+						</select>
+					</div>
+
+					<div class="mt-3">
+						<h3 class="h5 mb-2">Compresión</h3>
+						<select id="compression" class="form-control shadow-none rounded-0">
+							<option value="">Ninguna</option>
+							<option value="low">Media</option>
+							<option value="high">Alta</option>
+						</select>
+					</div>
+
+					<div class="mt-3">
+						<h3 class="h5 mb-2">Formato</h3>
+						<select id="format" class="form-control shadow-none rounded-0">
+							<option value="wave">Wave</option>
+							<option value="flac">FLAC</option>
+						</select>
+					</div>
+
+					<div class="mt-3 flac-options d-none">
+						<h3 class="h5 mb-2">Compresión FLAC</h3>
+						<select id="flacCompression" class="form-control shadow-none rounded-0">
+							<option value="0">0</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+						</select>
+					</div>
+				</div>
+			</nav>
+			-->
+			
+			<!-- Page Content -->
+			<div id="content">
+				<header class="navbar sticky-top navbar-expand navbar-dark bg-dark p-0">
+					<button type="button" id="sidebarCollapse" class="btn btn-dark navbar-brand py-0">
+						<i class="fas fa-bars invisible" style="width: 0"></i>RECORDER 3 &nbsp;<small>P1</small>
+					</button>
+
+					<div class="navbar-nav-scroll ml-auto">
+						<ul class="navbar-nav bd-navbar-nav flex-row justify-content-center">
+							<li class="nav-item">
+								<a id="recordButton" class="btn btn-dark" data-toggle="tooltip" title="Grabar" href="javascript:void(0)"><i class="fas fa-compact-disc"></i></a>
+							</li>
+							<li class="nav-item">
+								<a id="playButton" class="btn btn-dark" data-toggle="tooltip" title="Reprducir" href="javascript:void(0)"><i class="fas fa-play"></i></a>
+							</li>
+							<li class="nav-item">
+								<a id="saveButton" class="btn btn-dark" data-toggle="tooltip" title="Guardar" href="javascript:void(0)"><i class="fas fa-download"></i></a>
+							</li>
+							<li class="nav-item">
+								<a id="micMute" class="btn btn-dark" data-toggle="tooltip" title="Silenciar Micrófono" href="javascript:void(0)"><i class="fas fa-microphone"></i></a>
+							</li>
+							<li class="nav-item">
+								<a id="speakerMute" class="btn btn-dark active" data-toggle="tooltip" title="Silenciar Altavoces"  href="javascript:void(0)"><i class="fas fa-volume-up"></i></a>
+							</li>
+						</ul>
+					</div>
+				</header>
+
+				<main class="container mt-4">
+					<div class="row recorder-options">
+						<div class="col-md-6">
+
+							<div class="box border-top-0">
+								<div class="box-header bg-secondary text-white">
+									<h3 class="box-title">Flow</h3>
+									<div class="box-tools">
+										<button type="button" class="btn btn-box-tool-dark" data-toggle="collapse" data-target="#box-vmspeech" aria-expanded="true" aria-controls="box-vmspeech">
+											<i class="fas fa-chevron-up"></i>
+										</button>
+									</div>
+								</div>
+								<div id="box-vmspeech" class="box-body bg-dark text-white px-3 pt-3 pb-2 collapse show">
+									<form data-validate="true">
+										<div class="row">
+
+											<div class="form-group col-5 col-sm-6">
+												<label for="activar-vmspeech">Activar Flow</label>
+												<button type="button" class="btn btn-link p-0 d-block acf-switch-button">
+													<div class="acf-switch -on">
+														<span class="acf-switch-on">&nbsp;Si</span>
+														<span class="acf-switch-off">No</span>
+														<div class="acf-switch-slider"></div>
+													</div>			
+												</button>
+												<input id="activar-vmspeech" type="hidden" value="1" class="acf-switch-input">
+											</div>
+
+											<div class="form-group col-7 col-sm-6 vmspeech-options">
+												<label for="modo">Modo</label>
+												<select id="modo" class="form-control shadow-none selectpicker">
+													<option value="dictado">Dictado</option>
+													<option value="entrenamiento">Entrenamiento</option>
+													<option value="pronunciacion">Pronunciación</option>
+												</select>
+											</div>
+
+											<div class="form-group col-sm-6 vmspeech-options vmspeech-credentials">
+												<label for="usuario">Usuario</label>
+												<input id="usuario" type="text" class="form-control" data-rule-required="true">
+											</div>
+
+											<div class="form-group col-sm-6 vmspeech-options vmspeech-credentials">
+												<label for="password">Contraseña</label>
+												<input id="password" type="password" class="form-control" data-rule-required="true">
+											</div>
+										
+										</div>
+										<div class="row no-gutters" style="margin-left: -.5rem; margin-right: -.5rem;">
+
+											<div class="form-group col-4 px-2 vmspeech-options">
+												<label for="servidor">Servidor</label>
+												<input id="servidor" type="text" class="form-control" data-rule-required="true" value="virtualfilm.visualmedica.com">
+											</div>
+
+											<div class="form-group col-4 px-2 vmspeech-options">
+												<label for="puerto">Puerto</label>
+												<input id="puerto" type="number" class="form-control" data-rule-required="true" value="4173">
+											</div>
+
+											<div class="form-group col-4 px-2 vmspeech-options">
+												<label for="ssl">Conexión segura</label>
+												<button type="button" class="btn btn-link p-0 d-block acf-switch-button">
+													<div class="acf-switch -on">
+														<span class="acf-switch-on">&nbsp;Si</span>
+														<span class="acf-switch-off">No</span>
+														<div class="acf-switch-slider"></div>
+													</div>			
+												</button>
+												<input id="ssl" type="hidden" value="1" class="acf-switch-input">
+											</div>
+
+										</div>
+									</form>
+								</div>		
+							</div>
+
+						</div>
+						<div class="col-md-6">
+
+							<div class="box border-top-0">
+								<div class="box-header bg-secondary text-white">
+									<h3 class="box-title">Opciones</h3>
+									<div class="box-tools">
+										<button type="button" class="btn btn-box-tool-dark" data-toggle="collapse" data-target="#box-opciones" aria-expanded="true" aria-controls="box-opciones">
+											<i class="fas fa-chevron-up"></i>
+										</button>
+									</div>
+								</div>
+								<div id="box-opciones" class="box-body bg-dark text-white px-3 pt-3 pb-2 collapse show">
+									<div class="row">
+
+										<div class="form-group col-sm-6">
+											<label for="filter">Filtro</label>
+											<select id="filter" class="form-control shadow-none selectpicker">
+												<option value="">Ninguno</option>
+												<option value="allpass" data-frequency="20000" data-q="1">Pasa todo</option>
+												<option value="lowpass" data-frequency="400" data-q="1">Pasa bajo</option>
+												<option value="highpass" data-frequency="3000" data-q="1">Pasa alto</option>
+												<option value="bandpass" data-frequency="1500" data-q="5">Pasa banda</option>
+											</select>
+										</div>
+
+										<div class="form-group col-sm-6">
+											<label for="compression">Compresión</label>
+											<select id="compression" class="form-control shadow-none selectpicker">
+												<option value="">Ninguna</option>
+												<option value="medium">Media</option>
+												<option value="high">Alta</option>
+											</select>
+										</div>
+
+										<div class="form-group col-sm-6">
+											<label for="format">Formato</label>
+											<select id="format" class="form-control shadow-none selectpicker" disabled>
+												<option value="wave">Wave</option>
+												<option value="flac">FLAC</option>
+											</select>
+										</div>
+
+										<div class="form-group col-sm-6 flac-options" style="display: none">
+											<label for="flacCompression" data-toggle="tooltip" data-placement="top" title="Compresión FLAC">Comp. FLAC</label>
+											<select id="flacCompression" class="form-control shadow-none selectpicker">
+												<option value="0">0</option>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+												<option value="5">5</option>
+												<option value="6">6</option>
+												<option value="7">7</option>
+												<option value="8">8</option>
+											</select>
+										</div>
+
+									</div>
+								</div>			
+							</div>
+
+						</div>
+					</div>
+
+					<div class="row vmspeech-options">
+						<div class="col-lg-7 col-xl-8 wrapper d-none">
+
+							<div class="box border-top-0">
+								<div class="box-header bg-secondary text-white">
+									<h3 class="box-title">Entrenamiento</h3>	
+									<div class="box-tools">
+										<button type="button" class="btn btn-box-tool-dark" data-toggle="collapse" data-target="#box-training" aria-expanded="true" aria-controls="box-training">
+											<i class="fas fa-chevron-up"></i>
+										</button>
+									</div>
+								</div>
+								<div id="box-training" class="box-body collapse show">
+									<div style="min-height: 10rem">
+										<p class="w-100 p-3 default-text">
+											Por favor lea de la manera más natural posible las frases que le serán mostradas a continuación.
+											Debe pronunciar todo, incluido los signos de puntuación como la coma(,) y el punto(.)
+											<br/>
+											<br/>
+											Cuando se encuentre listo haga clic en iniciar para comenzar con el entrenamiento
+										</p>
+										<p class="w-100 p-3 text d-none"></p>
+									</div>
+									<div class="box-toolbar d-flex">
+										<a class="ml-1 btn btn-start disabled"><i class="far fa-play-circle"></i> Iniciar</a>
+										<a class="ml-xl-2 btn btn-pause disabled"><i class="far fa-pause-circle"></i> Pausar</a>
+										<a class="ml-xl-2 btn btn-stop disabled"><i class="far fa-stop-circle"></i> Detener</a>
+										<a class="ml-xl-2 mr-2 btn btn-adaptation disabled" data-toggle="modal" data-target="#adaptationModal"><i class="far fa-comment-dots"></i> Adaptación</a>
+										<small class="ml-auto py-2 pr-2 status">Entrenamiento no iniciado</small>
+									</div>
+								</div>	
+							</div>
+
+						</div>
+						<div class="col-lg-7 col-xl-8 wrapper">
+
+							<div class="box border-top-0">
+								<div class="box-header bg-secondary text-white">
+									<h3 class="box-title">Editor</h3>	
+									<div class="box-tools">
+										<button type="button" class="btn btn-box-tool-dark" data-toggle="collapse" data-target="#box-editor" aria-expanded="true" aria-controls="box-editor">
+											<i class="fas fa-chevron-up"></i>
+										</button>
+									</div>
+								</div>
+								<div id="box-editor" class="box-body collapse show">
+									<textarea id="editor" class="w-100" rows="10"></textarea>
+								</div>	
+							</div>
+
+						</div>
+						<div class="col-lg-5 col-xl-4 wrapper">
+
+							<div class="box border-top-0">
+								<div class="box-header bg-secondary text-white">
+									<h3 class="box-title">Último mensaje</h3>	
+									<div class="box-tools">
+										<button type="button" class="btn btn-box-tool-dark" data-toggle="collapse" data-target="#box-log" aria-expanded="true" aria-controls="box-log">
+											<i class="fas fa-chevron-up"></i>
+										</button>
+									</div>
+								</div>
+								<div id="box-log" class="box-body collapse show overflow-auto p-2">
+									<table class="table table-borderless table-sm table-hover w-100 m-0">
+										<tbody>
+											<tr>
+												<td class="text-center">Nada que mostrar</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>	
+							</div>
+
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-6 wrapper">
+				
+							<div class="box border-top-0">
+								<div class="box-header bg-secondary text-white">
+									<h3 class="box-title">Señal</h3>	
+									<div class="box-tools">
+										<button type="button" class="btn btn-box-tool-dark" data-toggle="collapse" data-target="#box-senal" aria-expanded="true" aria-controls="box-senal">
+											<i class="fas fa-chevron-up"></i>
+										</button>
+									</div>
+								</div>
+								<div id="box-senal" class="box-body collapse show">
+									<div class="mic-vis d-flex">
+										<!--<h3 class="heading">Signal</h3>-->
+										<canvas id="timeCanvas" width="1350" height="150" class="collapse show"></canvas>
+									</div>
+								</div>	
+							</div>
+
+						</div>
+						<div class="col-lg-6 wrapper">
+
+							<div class="box border-top-0">
+								<div class="box-header bg-secondary text-white">
+									<h3 class="box-title">Frecuencia</h3>
+									<div class="box-tools">
+										<button type="button" class="btn btn-box-tool-dark" data-toggle="collapse" data-target="#box-frecuencia" aria-expanded="true" aria-controls="box-frecuencia">
+											<i class="fas fa-chevron-up"></i>
+										</button>
+									</div>
+								</div>
+								<div id="box-frecuencia" class="box-body collapse show">
+									<div class="mic-vis d-flex box-body collapse show">
+										<!--<h3 class="heading">Signal</h3>-->
+										<canvas id="frequencyCanvas" width="1350" height="150" class="collapse show"></canvas>
+									</div>
+								</div>	
+							</div>
+					
+						</div>
+					</div>
+
+					<audio id="demoAudio"></audio>
+				</main>
+			</div>
+		</div>
+  
+		<!-- Modal -->
+		<div class="modal fade" id="adaptationModal" tabindex="-1" role="dialog" aria-labelledby="adaptationModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered mt-0" role="document">
+				<div class="modal-content rounded-0">
+					<div class="modal-header border-0 pb-0">
+						<h5 class="modal-title text-center w-100" id="adaptationModalLabel">Adaptación</h5>
+					</div>
+					<div class="modal-body pt-2">
+						<form data-validate="true">
+							<textarea class="form-control mb-3 with-border adaptation-data" rows="3" data-rule-required="true"></textarea>
+
+							<div class="d-flex align-items-center justify-content-center">
+								<button type="button" class="btn btn-secondary px-3" data-dismiss="modal">Cancelar</button>
+								<button type="button" class="btn btn-success btn-confirm ml-4">Confirmar</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="overlay"></div>
+
+		<!-- jQuery -->
+		<script src="js/jquery-3.4.1.min.js"></script>
+		<!-- Bootstrap -->
+		<script src="lib/bootstrap-4.3.1/js/bootstrap.bundle.min.js"></script>
+		<script src="lib/bootstrap-select-1.13.9/js/bootstrap-select.min.js"></script>
+		<!-- jQuery Custom Scroller CDN -->
+		<script src="lib/malihu-custom-scrollbar-3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+		<!-- Tooltipster -->
+		<script src="lib/tooltipster-4.2.6/js/tooltipster.bundle.min.js"></script>
+		<!-- jQuery Validation'-->
+		<script src="lib/jquery-validation-1.19.0/jquery.validate.min.js"></script>
+		<script src="lib/jquery-validation-1.19.0/localization/messages_es.min.js"></script>
+		<!-- CKEditor -->
+		<script src="lib/ckeditor-4.11.4/ckeditor.js"></script>
+
+		<script src="js/bootstrap-notify.js"></script>
+		
+		<script src="js/recorder.js"></script>
+		<script src="js/main.js?v=2.1.1"></script>
+		<script src="js/noise.js"></script>
+
+		<!--
+		<script type="text/javascript">
+			$(document).ready(function () {
+				$('#sidebar').mCustomScrollbar({
+					theme: "minimal"
+				});				
+				
+				$('#sidebar .dismiss, .overlay').on('click', function () {
+					$('#sidebar').removeClass('active');
+					$('.overlay').removeClass('active');
+				});
+	
+				$('#sidebarCollapse').on('click', function () {
+					$('#sidebar').addClass('active');
+					$('.overlay').addClass('active');
+					$('a[aria-expanded=true]').attr('aria-expanded', 'false');
+				});
+			});
+		</script>
+		-->
+	</body>
+</html>
